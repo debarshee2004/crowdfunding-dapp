@@ -17,10 +17,10 @@ contract CrowdfundingFactory {
      * @dev Structure to store essential campaign information
      */
     struct Campaign {
-        address campaignAddress;  // Address of the deployed campaign contract
-        address owner;            // Address of the campaign creator
-        string name;              // Name of the campaign
-        uint256 creationTime;     // Timestamp when the campaign was created
+        address campaignAddress; // Address of the deployed campaign contract
+        address owner; // Address of the campaign creator
+        string name; // Name of the campaign
+        uint256 creationTime; // Timestamp when the campaign was created
     }
 
     // Storage variables
@@ -71,7 +71,7 @@ contract CrowdfundingFactory {
             _goal,
             _durationInDays
         );
-        
+
         address campaignAddress = address(newCampaign);
         Campaign memory campaign = Campaign({
             campaignAddress: campaignAddress,
@@ -79,7 +79,7 @@ contract CrowdfundingFactory {
             name: _name,
             creationTime: block.timestamp
         });
-        
+
         campaigns.push(campaign);
         userCampaigns[msg.sender].push(campaign);
     }
@@ -89,7 +89,9 @@ contract CrowdfundingFactory {
      * @param _user Address of the user whose campaigns to retrieve
      * @return Array of Campaign structs created by the specified user
      */
-    function getUserCampaigns(address _user) external view returns (Campaign[] memory) {
+    function getUserCampaigns(
+        address _user
+    ) external view returns (Campaign[] memory) {
         return userCampaigns[_user];
     }
 

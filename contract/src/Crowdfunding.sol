@@ -18,7 +18,11 @@ contract Crowdfunding {
     /**
      * @dev Enum representing the possible states of the campaign
      */
-    enum CampaignState { Active, Successful, Failed }
+    enum CampaignState {
+        Active,
+        Successful,
+        Failed
+    }
     CampaignState public state;
 
     /**
@@ -65,7 +69,7 @@ contract Crowdfunding {
         require(!paused, "Contract is paused.");
         _;
     }
-    
+
     /**
      * @dev Constructor initializes the crowdfunding campaign
      * @param _owner Address of the campaign owner
@@ -96,9 +100,13 @@ contract Crowdfunding {
     function checkAndUpdateCampaignState() internal {
         if (state == CampaignState.Active) {
             if (block.timestamp >= deadline) {
-                state = address(this).balance >= goal ? CampaignState.Successful : CampaignState.Failed;            
+                state = address(this).balance >= goal
+                    ? CampaignState.Successful
+                    : CampaignState.Failed;
             } else {
-                state = address(this).balance >= goal ? CampaignState.Successful : CampaignState.Active;
+                state = address(this).balance >= goal
+                    ? CampaignState.Successful
+                    : CampaignState.Active;
             }
         }
     }
@@ -124,10 +132,7 @@ contract Crowdfunding {
      * @param _name Name or description of the tier
      * @param _amount Contribution amount required for this tier in wei
      */
-    function addTier(
-        string memory _name,
-        uint256 _amount
-    ) public onlyOwner {
+    function addTier(string memory _name, uint256 _amount) public onlyOwner {
         require(_amount > 0, "Amount must be greater than 0.");
         tiers.push(Tier(_name, _amount, 0));
     }
@@ -185,7 +190,10 @@ contract Crowdfunding {
      * @param _tierIndex Index of the tier to check
      * @return Boolean indicating whether the backer has funded the specified tier
      */
-    function hasFundedTier(address _backer, uint256 _tierIndex) public view returns (bool) {
+    function hasFundedTier(
+        address _backer,
+        uint256 _tierIndex
+    ) public view returns (bool) {
         return backers[_backer].fundedTiers[_tierIndex];
     }
 
@@ -211,7 +219,10 @@ contract Crowdfunding {
      */
     function getCampaignStatus() public view returns (CampaignState) {
         if (state == CampaignState.Active && block.timestamp > deadline) {
-            return address(this).balance >= goal ? CampaignState.Successful : CampaignState.Failed;
+            return
+                address(this).balance >= goal
+                    ? CampaignState.Successful
+                    : CampaignState.Failed;
         }
         return state;
     }
